@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:calenderselection/HelperVariable.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DaySelectionList extends StatelessWidget {
   bool isDaySelection = true;
-  DaySelectionList(this.isDaySelection, {Key? key}) : super(key: key);
+  DateTime individualDayObject;
+  DaySelectionList(this.isDaySelection, this.individualDayObject, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -140,7 +142,7 @@ class DaySelectionList extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        columnwiseData("Due Date", "05 Jun 23"),
+        columnwiseData("Due Date", DateFormat("dd MMM yyyy").format(individualDayObject)),
         columnwiseData("Level", "10"),
         columnwiseData("Days Left", " 23"),
       ],
@@ -187,9 +189,9 @@ class DaySelectionList extends StatelessWidget {
           SizedBox(width: 18,),
           Column(
             children: [
-              Text("24", style: TextStyle(fontSize: 16, color: colorCode.black, fontWeight: FontWeight.bold),),
+              Text(individualDayObject.day.toString(), style: TextStyle(fontSize: 16, color: colorCode.black, fontWeight: FontWeight.bold),),
               SizedBox(height: 4,),
-              Text("Mar", style: TextStyle(fontSize: 16, color: colorCode.black, fontWeight: FontWeight.bold),),
+              Text(DateFormat("MMM").format(individualDayObject), style: TextStyle(fontSize: 16, color: colorCode.black, fontWeight: FontWeight.bold),),
             ],
           ),
           Expanded(

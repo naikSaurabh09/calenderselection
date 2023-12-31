@@ -214,7 +214,7 @@ class customTableCalendar<T> extends StatefulWidget {
     this.locale,
     this.rangeStartDay,
     this.rangeEndDay,
-    this.weekendDays = const [DateTime.saturday, DateTime.sunday],
+    this.weekendDays = const [DateTime.sunday],
     this.calendarFormat = CalendarFormat.month,
     this.availableCalendarFormats = const {
       CalendarFormat.month: 'Month',
@@ -223,7 +223,7 @@ class customTableCalendar<T> extends StatefulWidget {
     },
     this.headerVisible = true,
     this.daysOfWeekVisible = true,
-    this.pageJumpingEnabled = false,
+    this.pageJumpingEnabled = true,
     this.pageAnimationEnabled = true,
     this.sixWeekMonthsEnforced = false,
     this.shouldFillViewport = false,
@@ -234,7 +234,7 @@ class customTableCalendar<T> extends StatefulWidget {
     this.formatAnimationCurve = Curves.linear,
     this.pageAnimationDuration = const Duration(milliseconds: 300),
     this.pageAnimationCurve = Curves.easeOut,
-    this.startingDayOfWeek = StartingDayOfWeek.sunday,
+    this.startingDayOfWeek = StartingDayOfWeek.monday,
     this.dayHitTestBehavior = HitTestBehavior.opaque,
     this.availableGestures = AvailableGestures.all,
     this.simpleSwipeConfig = const customSimpleSwipeConfig(

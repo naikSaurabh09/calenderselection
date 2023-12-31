@@ -22,12 +22,13 @@ class DaySelection extends StatefulWidget {
 }
 
 class _DaySelectionState extends State<DaySelection> {
-  CalendarFormat _calendarFormat = CalendarFormat.week;
-  RangeSelectionMode _rangeSelectionMode = RangeSelectionMode.disabled; // Can be toggled on/off by longpressing a date
-  DateTime _focusedDay = DateTime.now();
-  DateTime? _selectedDay;
+  final _calendarFormat = CalendarFormat.week;
+  final _rangeSelectionMode = RangeSelectionMode.disabled; // Can be toggled on/off by longpressing a date
+  late DateTime? _selectedDay;
   DateTime? _rangeStart;
   DateTime? _rangeEnd;
+
+  List tabs = ["All", "HDR", "Tech 1", "Follow up"];
 
   @override
   void initState() {
@@ -67,9 +68,9 @@ class _DaySelectionState extends State<DaySelection> {
               onTap: (){
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back, size: 26, color: colorCode.black,)),
-          SizedBox(width: 20,),
-          Text("In App Calender", style: TextStyle(color: colorCode.black),),
+              child: const Icon(Icons.arrow_back, size: 26, color: colorCode.black,)),
+          const SizedBox(width: 20,),
+          const Text("In App Calender", style: TextStyle(color: colorCode.black),),
         ],
       ),
       actions: [
@@ -89,11 +90,11 @@ class _DaySelectionState extends State<DaySelection> {
         selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
         rangeStartDay: _rangeStart,
         rangeEndDay: _rangeEnd,
+        availableGestures: AvailableGestures.none,
         calendarFormat: _calendarFormat,
         availableCalendarFormats: const {
           CalendarFormat.week: 'Week',
         },
-        startingDayOfWeek: StartingDayOfWeek.monday,
         daysOfWeekStyle: const customDaysOfWeekStyle(
           weekdayStyle: TextStyle(
             fontSize: 12,
@@ -104,16 +105,10 @@ class _DaySelectionState extends State<DaySelection> {
             color: colorCode.red,
           ),
         ),
-        weekendDays: [DateTime.sunday],
         rangeSelectionMode: _rangeSelectionMode,
-        shouldFillViewport: false,
         headerVisible: true,
-        headerStyle: const customHeaderStyle(
-          leftChevronVisible: false,
-          rightChevronVisible: false,
-        ),
         calendarStyle: customCalendarStyle(
-          todayTextStyle: TextStyle(color: colorCode.black),
+          todayTextStyle: const TextStyle(color: colorCode.black),
           todayDecoration: BoxDecoration(
             color: colorCode.white,
             border: Border.all(color: colorCode.blueBorder,width: 2),
@@ -125,38 +120,6 @@ class _DaySelectionState extends State<DaySelection> {
           ),
           weekendTextStyle: const TextStyle(color: colorCode.red),
         ),
-        onDaySelected: (selectedDay, focusedDay) {
-          // if (!isSameDay(_selectedDay, selectedDay)) {
-          //   setState(() {
-          //     _selectedDay = selectedDay;
-          //     _focusedDay = focusedDay;
-          //     //_rangeStart = null; // Important to clean those
-          //     //_rangeEnd = null;
-          //     //_rangeSelection
-          //     // Mode = RangeSelectionMode.toggledOff;
-          //   });
-          // }
-        },
-        onRangeSelected: (start, end, focusedDay) {
-          // setState(() {
-          //   _selectedDay = null;
-          //   _focusedDay = focusedDay;
-          //   _rangeStart = start;
-          //   _rangeEnd = end;
-          //   //_rangeSelectionMode = RangeSelectionMode.toggledOn;
-          // });
-        },
-        onFormatChanged: (format) {
-          // if (_calendarFormat != format) {
-          //   setState(() {
-          //     _calendarFormat = format;
-          //   });
-          // }
-        },
-        onPageChanged: (focusedDay) {
-          //_focusedDay = focusedDay;
-        },
-        weekNumbersVisible: false,
         calendarBuilders: customCalendarBuilders(
           headerTitleBuilder: (context, dateTime)=>headerBuilder(dateTime),
         ),
@@ -182,24 +145,23 @@ class _DaySelectionState extends State<DaySelection> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.chevron_left),
+          const Icon(Icons.chevron_left),
           Expanded(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(label),
-                SizedBox(width: 6,),
-                Icon(Icons.arrow_drop_down_outlined),
+                const SizedBox(width: 6,),
+                const Icon(Icons.arrow_drop_down_outlined),
               ],
             ),
           ),
-          Icon(Icons.chevron_right),
+          const Icon(Icons.chevron_right),
         ],
       ),
     );
   }
 
-  List tabs = ["All", "HDR", "Tech 1", "Follow up"];
   tabBarDesign(){
     return Expanded(
       child: ClipRRect(
@@ -208,7 +170,7 @@ class _DaySelectionState extends State<DaySelection> {
           color: colorCode.white,
           child: Column(
             children: [
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               Center(
                 child: Container(
                   height: 5,
@@ -218,20 +180,20 @@ class _DaySelectionState extends State<DaySelection> {
                       borderRadius: BorderRadius.circular(12)
                   ),
                 ),),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Expanded(
                 child: CustomTabView(
                   initPosition: 0,
                   isScroll: true,
                   itemCount: tabs.length,
-                  stub: SizedBox(),
+                  stub: const SizedBox(),
                   indicatorColor: colorCode.blueFilling,
                   tabBuilder: (BuildContext, index)=>Tab(text: tabs[index],),
                   listCountBuilder: (BuildContext context, int index)=>listItemCount(index),
                   pageBuilder: (BuildContext, index){
                     return ListView.builder(
                       itemCount: 14,
-                      itemBuilder: (BuildContext,index) => DaySelectionList(true),
+                      itemBuilder: (context, index) => DaySelectionList(true, _selectedDay!),
                     );
                   },
                   onPositionChange: (index){},
